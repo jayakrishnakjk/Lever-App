@@ -1,11 +1,5 @@
-import {
-	StyleSheet,
-	View,
-	Text,
-	Image,
-	TextInput,
-	TouchableOpacity,
-} from 'react-native';
+import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
+import { TextInput, Button } from 'react-native-paper';
 
 import { Formik } from 'formik';
 import * as Yup from 'yup';
@@ -16,6 +10,7 @@ const validationSchema = Yup.object().shape({
 });
 
 const LoginScreen = () => {
+	const globalStles = require('../../styles');
 	return (
 		<View style={styles.container}>
 			{/* logo and titles */}
@@ -24,12 +19,10 @@ const LoginScreen = () => {
 					style={{ width: 70, height: 90, marginBottom: 10 }}
 					source={require('../../assets/lever-auto-logo.png')}
 				/>
-				<Text
-					style={{ color: '#111111', fontSize: 20, marginBottom: 7 }}
-				>
+				<Text style={globalStles.mainHeading}>
 					Welcome to the Lever Auto Portal
 				</Text>
-				<Text style={{ color: '#757a82', fontSize: 12 }}>
+				<Text style={globalStles.commonParaText}>
 					Please Sign-in to your account
 				</Text>
 			</View>
@@ -52,17 +45,8 @@ const LoginScreen = () => {
 							onChange={handleChange('username')}
 							onBlur={handleBlur('username')}
 							placeholder="Username"
-							placeholderTextColor="#867A91"
 							value={values.username}
-							style={{
-								borderColor: '#867A91',
-								borderRadius: 10,
-								borderWidth: 1,
-								fontSize: 18,
-								height: 40,
-								marginBottom: errors.username ? 5 : 20,
-								paddingHorizontal: 10,
-							}}
+							mode="outlined"
 						/>
 						{errors.username && (
 							<Text style={{ color: 'red', marginBottom: 10 }}>
@@ -86,20 +70,11 @@ const LoginScreen = () => {
 						<TextInput
 							onChangeText={handleChange('password')}
 							onBlur={handleBlur('password')}
-							placeholderTextColor="#867A91"
 							placeholder="Password"
 							secureTextEntry
 							value={values.password}
-							style={{
-								fontSize: 18,
-								paddingHorizontal: 10,
-								height: 40,
-								// paddingVertical: 10,
-								borderWidth: 1,
-								borderColor: '#867A91',
-								marginBottom: errors.password ? 5 : 20,
-								borderRadius: 10,
-							}}
+							mode="outlined"
+							right={<TextInput.Icon icon="eye" />}
 						/>
 						{errors.password && (
 							<Text style={{ color: 'red', marginBottom: 10 }}>
@@ -119,18 +94,15 @@ const LoginScreen = () => {
 						>
 							Forgot Password?
 						</Text> */}
-						<TouchableOpacity
+
+						<Button
+							style={globalStles.defaultButton}
+							rippleColor={'#000000'}
+							mode="contained"
 							onPress={handleSubmit}
-							style={{
-								backgroundColor: '#243B7F',
-								height: 36,
-								borderRadius: 10,
-								justifyContent: 'center',
-								alignItems: 'center',
-							}}
 						>
-							<Text style={{ color: '#ffffff' }}>Sign in</Text>
-						</TouchableOpacity>
+							Sign in
+						</Button>
 					</View>
 				)}
 			</Formik>
