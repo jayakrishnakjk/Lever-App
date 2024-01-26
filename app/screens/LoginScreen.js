@@ -3,11 +3,13 @@ import {
 	View,
 	Text,
 	Image,
-	TextInput,
 	TouchableOpacity,
 } from 'react-native';
+import { TextInput, Button } from 'react-native-paper';
+
 
 const LoginScreen = () => {
+	const globalStles = require('../../styles')
 	return (
 		<View style={styles.container}>
 			{/* logo and titles */}
@@ -17,11 +19,11 @@ const LoginScreen = () => {
 					source={require('../../assets/lever-auto-logo.png')}
 				/>
 				<Text
-					style={{ color: '#111111', fontSize: 20, marginBottom: 7 }}
+					style={globalStles.mainHeading}
 				>
 					Welcome to the Lever Auto Portal
 				</Text>
-				<Text style={{ color: '#757a82', fontSize: 12 }}>
+				<Text style={globalStles.commonParaText}>
 					Please Sign-in to your account
 				</Text>
 			</View>
@@ -29,18 +31,9 @@ const LoginScreen = () => {
 			{/* login form */}
 			<View style={{ marginTop: 40 }}>
 				<TextInput
+					mode="outlined"
+					label="Username"
 					placeholder="Username"
-					placeholderTextColor="#867A91"
-					style={{
-						fontSize: 18,
-						paddingHorizontal: 10,
-						height: 40,
-						// paddingVertical: 10,
-						borderWidth: 1,
-						borderColor: '#867A91',
-						marginBottom: 10,
-						borderRadius: 10,
-					}}
 				/>
 
 				<Text
@@ -56,19 +49,10 @@ const LoginScreen = () => {
 				</Text>
 
 				<TextInput
-					placeholder="Password"
-					placeholderTextColor="#867A91"
+					mode="outlined"
+					label="Password"
 					secureTextEntry
-					style={{
-						fontSize: 18,
-						paddingHorizontal: 10,
-						height: 40,
-						// paddingVertical: 10,
-						borderWidth: 1,
-						borderColor: '#867A91',
-						marginBottom: 10,
-						borderRadius: 10,
-					}}
+					right={<TextInput.Icon icon="eye" />}
 				/>
 				<Text
 					onPress={() => console.log('orgot password clicked')}
@@ -82,17 +66,9 @@ const LoginScreen = () => {
 					Forgot Password?
 				</Text>
 
-				<TouchableOpacity
-					style={{
-						backgroundColor: '#243B7F',
-						height: 36,
-						borderRadius: 10,
-						justifyContent: 'center',
-						alignItems: 'center',
-					}}
-				>
-					<Text style={{ color: '#ffffff' }}>Sign in</Text>
-				</TouchableOpacity>
+				<Button style={globalStles.defaultButton} rippleColor={'#000000'} mode="contained" onPress={() => console.log('Pressed')}>
+					Sign in
+				</Button>
 			</View>
 		</View>
 	);
