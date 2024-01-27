@@ -1,15 +1,69 @@
 import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { TextInput, Button } from 'react-native-paper';
 
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
+import { createStackNavigator } from '@react-navigation/stack';
+import Nav from '../navigation/Nav';
 
 const validationSchema = Yup.object().shape({
 	username: Yup.string().required().label('Username'),
 	password: Yup.string().required().label('Password'),
 });
 
+const Stack = createStackNavigator();
+
+const CreateStackNavigator = () => (
+	<Stack.Navigator>
+		<Stack.Screen name="nav" component={Nav} />
+	</Stack.Navigator>
+);
+
 const LoginScreen = () => {
+	const navigation = useNavigation();
+
+	const handleLogin = async (val) => {
+		const data = {
+			email: val.username,
+			password: val.password,
+			ipAddress: '49.37.158.138',
+			macAddres: '',
+			isTrusted: true,
+			deviceName:
+				'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36',
+		};
+
+		const headers = {
+			hostname: 'devc.leverauto.com',
+		};
+
+		try {
+			const response = await axios.post(
+				'https://devc.leverauto.com/auth/api/v1/auth/login',
+				data,
+				{ headers }
+			);
+
+			AsyncStorage.setItem('token', response.data?.token);
+			AsyncStorage.setItem('user', JSON.stringify(response.data?.user));
+			AsyncStorage.setItem(
+				'partner',
+				JSON.stringify(response.data?.partner)
+			);
+
+			navigation.navigate(nav);
+		} catch (err) {
+			console.log(err);
+		}
+
+		// AsyncStorage.
+	};
+
 	const globalStles = require('../../styles');
 	return (
 		<View style={styles.container}>
@@ -30,26 +84,32 @@ const LoginScreen = () => {
 			{/* login form */}
 			<Formik
 				initialValues={{ username: '', password: '' }}
-				onSubmit={(val) => console.log(val)}
+				onSubmit={(val) => handleLogin(val)}
 				validationSchema={validationSchema}
 			>
 				{({
 					handleChange,
 					handleSubmit,
-					handleBlur,
+					setFieldTouched,
+					touched,
 					values,
 					errors,
 				}) => (
 					<View style={{ marginTop: 40 }}>
 						<TextInput
-							onChange={handleChange('username')}
-							onBlur={handleBlur('username')}
+							onChangeText={handleChange('username')}
+							onBlur={() => setFieldTouched('username')}
 							placeholder="Username"
 							value={values.username}
 							mode="outlined"
+							label="Username"
+							style={{
+								marginBottom: 10,
+							}}
+							// right={<TextInput.Icon icon="eye" />}
 						/>
-						{errors.username && (
-							<Text style={{ color: 'red', marginBottom: 10 }}>
+						{touched.username && (
+							<Text style={{ color: 'red' }}>
 								{errors.username}
 							</Text>
 						)}
@@ -69,15 +129,24 @@ const LoginScreen = () => {
 
 						<TextInput
 							onChangeText={handleChange('password')}
-							onBlur={handleBlur('password')}
+							onBlur={() => setFieldTouched('password')}
 							placeholder="Password"
 							secureTextEntry
 							value={values.password}
 							mode="outlined"
-							right={<TextInput.Icon icon="eye" />}
+							label="Password"
+							style={{
+								marginBottom: errors.username ? 5 : 10,
+							}}
+							// right={<TextInput.Icon icon="eye" />}
 						/>
-						{errors.password && (
-							<Text style={{ color: 'red', marginBottom: 10 }}>
+						{touched.password && (
+							<Text
+								style={{
+									color: 'red',
+									// marginBottom: touched.password ? 0 : 10,
+								}}
+							>
 								{errors.password}
 							</Text>
 						)}
@@ -97,7 +166,7 @@ const LoginScreen = () => {
 
 						<Button
 							style={globalStles.defaultButton}
-							rippleColor={'#000000'}
+							rippleColor={'#000'}
 							mode="contained"
 							onPress={handleSubmit}
 						>
