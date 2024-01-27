@@ -1,13 +1,19 @@
+import React from 'react';
 import { StyleSheet } from 'react-native';
-import LoginScreen from './app/screens/LoginScreen';
-import {
-	MD3LightTheme as DefaultTheme,
-	PaperProvider,
-} from 'react-native-paper';
+import { NavigationContainer } from '@react-navigation/native';
+import { Provider } from 'react-redux';
+
 import Nav from './app/navigation/Nav';
+import store from './app/redux/store';
 
 const App = () => {
-	return <Nav />;
+	return (
+		<Provider store={store}>
+			<NavigationContainer>
+				<Nav />
+			</NavigationContainer>
+		</Provider>
+	);
 };
 
 export default App;

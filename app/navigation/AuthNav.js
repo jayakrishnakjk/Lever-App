@@ -1,19 +1,13 @@
-import { StyleSheet, View, Text } from 'react-native';
+import { createStackNavigator } from '@react-navigation/stack';
 
-const AuthNav = () => {
-	return (
-		<View style={styles.container}>
-			<Text>AuthNav</Text>
-		</View>
-	);
-};
+import LoginScreen from '../screens/LoginScreen';
+
+const Stack = createStackNavigator();
+
+const AuthNav = () => (
+	<Stack.Navigator screenOptions={{ headerShown: false }}>
+		<Stack.Screen name="Login" component={LoginScreen} />
+	</Stack.Navigator>
+);
 
 export default AuthNav;
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-});

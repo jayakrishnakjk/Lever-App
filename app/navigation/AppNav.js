@@ -1,32 +1,27 @@
 import { createStackNavigator } from '@react-navigation/stack';
-import { NavigationContainer } from '@react-navigation/native';
-
+import React from 'react';
+import { useSelector } from 'react-redux';
 import DealerDashboard from '../screens/dealerPortal/DealerDashboard';
 import LenderDashboard from '../screens/lenderPortal/LenderDashboard';
 
 const Stack = createStackNavigator();
 
-const StackNavigator = () => {
-	<Stack.Navigator>
-		<Stack.Screen name="Com1" component={Com1} />
-		<Stack.Screen name="Com2" component={Com2} />
-	</Stack.Navigator>;
-};
-
-const comp1 = () => {
-	return <Text>Com1</Text>;
-};
-
-const comp2 = () => {
-	return <Text>Com2</Text>;
-};
-
 const AppNav = () => {
-	console.log('AppNav');
+	const user = useSelector((state) => state.auth.user);
 
-	<NavigationContainer>
-		<StackNavigator />
-	</NavigationContainer>;
+	return (
+		<Stack.Navigator
+			initialRouteName={
+				user?.role === 'Dealer' || user?.role === 'Dealer Admin'
+					? 'DealerDashboard'
+					: 'LenderDashboard'
+			}
+			screenOptions={{ headerShown: false }}
+		>
+			<Stack.Screen name="DealerDashboard" component={DealerDashboard} />
+			<Stack.Screen name="LenderDashboard" component={LenderDashboard} />
+		</Stack.Navigator>
+	);
 };
 
 export default AppNav;
