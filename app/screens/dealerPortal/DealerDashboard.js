@@ -3,44 +3,51 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import Home from "../../components/Home/Home"
 import Dashboard from "../../components/Dashboard/Dashboard"
 import Settings from "../../components/Settings/Settings"
+import UserProfile from '../../components/UserProfile'
 
 const DealerDashboard = () => {
-	
-
-	
 
 	const Tab = createBottomTabNavigator()
 
 	const homeName = 'Home';
 	const dashboard = 'Dashboard';
-	const settingsName = 'Settings'
+	const settingsName = 'Settings';
+	const profile = 'UserProfile';
 
 	return (
-			<Tab.Navigator
-				initialRouteName={homeName}
-				screenOptions={({ route }) => ({
-					tabBarIcon: ({ focused, color }) => {
-						let iconName;
-						let rn = route.name;
+		<Tab.Navigator
+			initialRouteName={homeName}
+			screenOptions={({ route }) => ({
+				tabBarIcon: ({ focused, color }) => {
+					let iconName;
+					let rn = route.name;
 
-						if (rn === homeName) {
+					switch (rn) {
+						case 'homeName':
 							iconName = focused ? 'home' : 'home-outline';
-						} else if (rn === dashboard) {
+							break;
+						case 'dashboard':
 							iconName = focused ? 'list' : 'list-outline';
-						} else {
+							break;
+						case 'settingsName':
 							iconName = focused ? 'settings' : 'settings-outline'
-						}
-
-						return <Ionicons name={iconName} size={12} color={color} />
+							break;
+						default:
+							iconName = focused ? 'profile' : 'profile-outline'
+							break;
 					}
-				})}
-			>
 
-				<Tab.Screen name={homeName} component={Home} />
-				<Tab.Screen name={dashboard} component={Dashboard} />
-				<Tab.Screen name={settingsName} component={Settings} />
+					return <Ionicons name={iconName} size={12} color={color} />
+				}
+			})}
+		>
 
-			</Tab.Navigator>
+			<Tab.Screen name={homeName} component={Home} />
+			<Tab.Screen name={dashboard} component={Dashboard} />
+			<Tab.Screen name={settingsName} component={Settings} />
+			<Tab.Screen name={profile} component={UserProfile} />
+
+		</Tab.Navigator>
 	);
 };
 
